@@ -1,0 +1,57 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+<title></title>
+<script type="text/javascript">
+function update_list() {
+    var doc = this.document;
+    elm_action = doc.getElementById('elm_action');
+    elm_action.value = 'update';
+    elm_form = doc.getElementById('from_photo_list');
+    elm_form.submit();
+}
+function view_photo(photo_id) {
+    var doc = this.document;
+    elm_photo_id = doc.getElementById('elm_photo_id');
+    elm_photo_id.value = photo_id;
+    elm_form = doc.getElementById('from_view_photo');
+    elm_form.target = "win_" + photo_id;
+    elm_form.submit();
+}
+</script>
+</head>
+
+<body>
+<form id="from_photo_list" method="" action="/photo/list">
+<input id="elm_action" type="hidden" name="eml_action" value="">
+
+<select name="view_year" >
+{% for yyyymm in args.list_yyyymm %}
+<option value="{{ yyyymm }}" {% if (yyyymm == args.sel_yyyymm) %}selected{% endif %}>{{ yyyymm }}</option>
+{% endfor %}
+</select>
+<input type="button" value="Update" onclick="update_list();">
+</form>
+
+<form id="from_view_photo" method="" action="/photo/view">
+<input id="elm_photo_id" type="hidden" name="photo_id" value="">
+<table border="1">
+{% if (args.list_photo|length == 0) %}
+<tr><th> Sorry, Found no photo files </th></tr>
+{% endif %}
+
+
+{% for photo in args.list_photo %}
+<tr><th><input type="button" value="詳細" onclick="view_photo('{{ photo.photo_id }}')"></th>
+    <td>{{ photo.photo_id }}</td>
+    <td>{{ photo.photo_timestamp }}</td>
+    <td>{{ photo.photo_edge_id }}</td>
+</tr>
+{% endfor %}
+
+
+</table>
+</form>
+</body>
+</html>
+

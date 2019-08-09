@@ -1,0 +1,2 @@
+HOME=/root
+* * * * * ${HOME}/ros_ws/src/picam_ros/scripts/take_pub_photo.sh
